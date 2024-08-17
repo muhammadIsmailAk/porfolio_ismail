@@ -23,6 +23,47 @@
   <link rel="stylesheet" href="assets/css/style.css" />
   
 </head>
+<style>
+
+  /* Default - No margin (for small screens) */
+
+
+/* Medium screens (tablets) */
+@media (min-width: 768px) {
+  .custom-margin {
+    margin-left: 44px; /* Adjust as needed for medium screens */
+  }
+}
+@media screen and (max-width: 575px) {
+    .st-hero.st-style1 .st-hero-text h1 {
+        font-size: 65px;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+  .custom-margin {
+    margin-left: 222px; /* Original margin for large screens */
+  }
+}
+
+  @media (max-width: 767px) {
+    .hello {
+    margin-left: 14px; /* Original margin for large screens */
+  }
+  .custom-margin {
+    margin-left: 14px; /* Original margin for large screens */
+  }
+  .st-contact-title {
+    font-size: 30px;
+    font-weight: 400;
+    margin-top: -6px;
+    margin-left: 36px;
+    margin-bottom: 22px;
+}
+}
+
+</style>
 
 <body id="home">
   <!-- Start Header Section -->
@@ -66,7 +107,7 @@
   <section class="st-hero-wrap st-parallax">
     <div class="st-hero st-style1 st-ripple-version">
       <div class="container">
-        <div class="st-hero-text" style="margin-left: 158px; ">
+        <div class="st-hero-text custom-margin">
           <h3>Hello, I’m</h3>
           <h1>Muhammad <br> Ismail <br>Ali Khan
           </h1>
@@ -123,7 +164,7 @@
           <!-- </div>
           <div class="st-height-b0 st-height-lg-b30"></div>
         </div> -->
-        <div class="col-lg-8" style="margin-left: 222px">
+        <div class="col-lg-8 custom-margin">
           <div class="st-vertical-middle">
             <div class="st-vertical-middle-in">
               <div class="st-text-block st-style1">
@@ -233,7 +274,7 @@
                   <g>
                     <rect x="272" y="392" width="96" height="16" />
                   </g>
-                </g>
+                </g>hello
                 <g>
                   <g>
                     <rect x="136" y="184" width="80" height="16" />
@@ -366,7 +407,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-6">
-          <div class="st-skill-wrap">
+          <div class="st-skill-wrap hello">
             <div class="st-skill-heading">
               <h2 class="st-skill-title">All the skills that I have in that field
                 of work are mentioned.</h2>
