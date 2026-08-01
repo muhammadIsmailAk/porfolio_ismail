@@ -14,6 +14,34 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- ── Firebase (client-side, works on GitHub Pages) ── -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+    // 🔑 Replace with YOUR Firebase project config (Project Settings → General → Your apps)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCN75VsJqm5o9XwBk9M8AbUpCmzO7uQzZY",
+      authDomain: "portfolio-6339c.firebaseapp.com",
+      projectId: "portfolio-6339c",
+      storageBucket: "portfolio-6339c.firebasestorage.app",
+      messagingSenderId: "692214271345",
+      appId: "1:692214271345:web:03b0dedc4731616487fad0",
+      measurementId: "G-DFRKK99RJR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Expose what the form handler needs, since this is a module scope
+    window.__submitContactForm = async (data) => {
+      await addDoc(collection(db, "contactMessages"), {
+        ...data,
+        createdAt: serverTimestamp()
+      });
+    };
+  </script>
 </head>
 
 <style>
@@ -79,7 +107,7 @@ body::before {
 ══════════════════════════════════ */
 .mono-tag {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 35px;
   letter-spacing: 0.5px;
   color: var(--brass);
 }
@@ -222,9 +250,9 @@ body::before {
 
 .hero-name {
   font-family: var(--font-display);
-  font-size: clamp(48px, 6vw, 84px);
+  font-size: clamp(44px, 5.2vw, 76px);
   font-weight: 600;
-  line-height: 0.98;
+  line-height: 1.05;
   letter-spacing: -1.5px;
   color: var(--paper);
   margin-bottom: 22px;
@@ -402,15 +430,16 @@ body::before {
 ══════════════════════════════════ */
 .about-grid {
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: 90px;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 70px;
   align-items: center;
 }
 @media (max-width: 900px) { .about-grid { grid-template-columns: 1fr; gap: 48px; } }
 
 .about-portrait {
   position: relative;
-  aspect-ratio: 4/5;
+  aspect-ratio: 3/4;
+  max-width: 620px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--line);
   background: linear-gradient(160deg, var(--ink3), var(--ink2));
@@ -418,21 +447,47 @@ body::before {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  box-shadow: var(--shadow);
 }
 .about-portrait::before {
   content: '';
   position: absolute; inset: 0;
   background-image: linear-gradient(var(--line-soft) 1px, transparent 1px), linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
   background-size: 26px 26px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.5;
 }
-.about-portrait-glyph { font-size: 110px; position: relative; z-index: 1; filter: grayscale(0.3); }
+.about-portrait-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 55% 8%;
+  filter: grayscale(0.15) contrast(1.08) brightness(0.96);
+  transition: transform 1.1s var(--ease), filter 0.6s var(--ease);
+}
+.about-portrait:hover .about-portrait-img {
+  transform: scale(1.045);
+  filter: grayscale(0) contrast(1.1) brightness(1);
+}
+.about-portrait::after {
+  content: '';
+  position: absolute; inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(10,11,13,0) 55%, rgba(10,11,13,0.55) 100%),
+              linear-gradient(100deg, rgba(201,160,78,0.10) 0%, transparent 40%);
+  pointer-events: none;
+}
 .about-portrait-frame-label {
   position: absolute;
   bottom: 18px; left: 18px;
+  z-index: 2;
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--brass-lt);
-  background: rgba(10,11,13,0.6);
+  background: rgba(10,11,13,0.55);
+  backdrop-filter: blur(6px);
   padding: 5px 10px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -780,7 +835,7 @@ body::before {
         Available for freelance work
       </div>
       <h1 class="hero-name">
-        Muhammad<br>Ismail<br><span class="accent-word">Ali Khan</span>
+        Muhammad Ismail<br><span class="accent-word">Ali Khan</span>
       </h1>
       <p class="hero-role">
         &gt; building <span class="typed-text" id="typedText">Laravel applications</span>
@@ -816,7 +871,7 @@ body::before {
         <div><span class="tok-key">const</span> <span class="tok-punc">engineer</span> <span class="tok-punc">=</span> <span class="tok-punc">{</span></div>
         <div class="indent"><span class="tok-key">name:</span> <span class="tok-str">"Muhammad Ismail Ali Khan"</span><span class="tok-punc">,</span></div>
         <div class="indent"><span class="tok-key">based:</span> <span class="tok-str">"Karachi, Pakistan"</span><span class="tok-punc">,</span></div>
-        <div class="indent"><span class="tok-key">stack:</span> <span class="tok-punc">[</span><span class="tok-str">"Laravel"</span><span class="tok-punc">,</span> <span class="tok-str">"Python"</span><span class="tok-punc">,</span> <span class="tok-str">"MySQL"</span><span class="tok-punc">]</span><span class="tok-punc">,</span></div>
+        <div class="indent"><span class="tok-key">stack:</span> <span class="tok-punc">[</span><span class="tok-str">"Laravel"</span><span class="tok-punc">,</span> <span class="tok-str">"CodeIgniter"</span><span class="tok-punc">,</span> <span class="tok-str">"Python"</span><span class="tok-punc">,</span> <span class="tok-str">"MySQL"</span><span class="tok-punc">]</span><span class="tok-punc">,</span></div>
         <div class="indent"><span class="tok-key">focus:</span> <span class="tok-str">"scalable web + ML"</span><span class="tok-punc">,</span></div>
         <div class="indent"><span class="tok-key">status:</span> <span class="tok-type">Status.Available</span><span class="tok-punc">,</span></div>
         <div class="indent"><span class="tok-com">// 20+ shipped projects</span></div>
@@ -828,17 +883,19 @@ body::before {
 
 <!-- ── ABOUT ── -->
 <section class="section-wrap" id="about">
+          <div class="mono-tag" style="margin-bottom:14px; justify-content:center; font-weight:35px ; display:flex">About</div>
+
   <div class="container-custom">
     <div class="about-grid">
 
       <div class="reveal">
         <div class="about-portrait">
-          <span class="about-portrait-glyph">👨‍💻</span>
-          <!-- <span class="about-portrait-frame-label">01 · profile.png</span> -->
+          <img src="assets/img/section/muhammad-portrait.png" alt="Muhammad Ismail Ali Khan" class="about-portrait-img">
         </div>
         <div class="about-tech-chips">
           <span class="tech-chip">PHP</span>
           <span class="tech-chip">Laravel</span>
+          <span class="tech-chip">CodeIgniter</span>
           <span class="tech-chip">Python</span>
           <span class="tech-chip">FastAPI</span>
           <span class="tech-chip">MySQL</span>
@@ -848,28 +905,28 @@ body::before {
         </div>
       </div>
 
-      <div class="reveal reveal-delay-2">
-        <div class="mono-tag" style="margin-bottom:14px">about</div>
-        <h2 class="section-title">Turning ideas into<br><em>digital reality</em></h2>
-        <p class="section-subtitle" style="margin-bottom:0">
+      <div class="reveal reveal-delay-2" style="text-align:center">
+        <h2 class="section-title" style="font-size:clamp(38px, 4.4vw, 56px)">Turning ideas into<br><em>digital reality</em></h2>
+        <p class="section-subtitle" style="margin:0 auto; font-size:19px; font-weight:600; color:var(--text); max-width:640px">
           I'm a results-driven software engineer specialising in
-          <strong style="color:var(--paper)">Laravel</strong>, <strong style="color:var(--paper)">Python</strong>,
+          <strong style="color:var(--paper)">Laravel</strong>, <strong style="color:var(--paper)">CodeIgniter</strong>,
+          <strong style="color:var(--paper)">Python</strong>,
           and full-stack web development. I work at the intersection of clean code and
           meaningful user experience — building everything from mission-critical healthcare
           platforms to data-driven machine learning solutions.
         </p>
-        <p class="section-subtitle" style="margin-top:16px; margin-bottom:0">
+        <p class="section-subtitle" style="margin:16px auto 0; font-size:19px; font-weight:600; color:var(--text); max-width:640px">
           Beyond web development, I apply <strong style="color:var(--paper)">data science</strong> techniques
           to help businesses uncover insights hidden in their data and make smarter, evidence-based decisions.
         </p>
-        <ul class="about-info-list">
+        <ul class="about-info-list" style="text-align:left">
           <li><strong>Location</strong>Karachi, Pakistan</li>
           <li><strong>Phone</strong>+92 332 2275297</li>
           <li><strong>Email</strong>muhammadsafi062@gmail.com</li>
           <li><strong>Languages</strong>English, Urdu</li>
           <li><strong>Freelance</strong><span style="color:var(--emerald)">● Available</span></li>
         </ul>
-        <div style="display:flex; gap:12px; flex-wrap:wrap">
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center">
           <a href="assets/img/section/Muhammad_Ismail_Ali_Khan_Laravel_Developer.pdf" target="_blank" class="btn-primary">
             Download CV &nbsp;↓
           </a>
@@ -893,7 +950,7 @@ body::before {
       <div class="service-card reveal reveal-delay-1">
         <span class="service-index">01</span>
         <h3>Full-Stack Web Development</h3>
-        <p>Pixel-perfect frontends paired with robust Laravel backends. Complete web solutions that are fast, secure, and built to scale.</p>
+        <p>Pixel-perfect frontends paired with robust Laravel and CodeIgniter backends. Complete web solutions that are fast, secure, and built to scale.</p>
       </div>
 
       <div class="service-card reveal reveal-delay-2">
@@ -1037,6 +1094,10 @@ body::before {
           <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
         </div>
         <div class="skill-bar-wrap">
+          <div class="skill-bar-head"><span class="skill-name">CodeIgniter</span><span class="skill-pct">78%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="78"></div></div>
+        </div>
+        <div class="skill-bar-wrap">
           <div class="skill-bar-head"><span class="skill-name">Python Development</span><span class="skill-pct">80%</span></div>
           <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
         </div>
@@ -1094,7 +1155,7 @@ body::before {
     <div class="contact-grid">
 
       <div class="contact-form-card reveal reveal-delay-1">
-        <form id="contact-form" action="#" method="POST">
+        <form id="contact-form" method="POST">
           <div class="form-group">
             <label>Your Name</label>
             <input type="text" name="name" placeholder="Muhammad Ali" required>
@@ -1111,9 +1172,12 @@ body::before {
             <label>Message</label>
             <textarea name="msg" placeholder="Tell me about your project…" required></textarea>
           </div>
-          <button type="submit" class="btn-primary" style="width:100%; justify-content:center">
+          <!-- honeypot: hidden from real users, bots tend to fill it -->
+          <input type="text" name="website" style="position:absolute; left:-9999px" tabindex="-1" autocomplete="off">
+          <button type="submit" class="btn-primary" style="width:100%; justify-content:center" id="contactSubmitBtn">
             Send Message &nbsp;→
           </button>
+          <p id="contactFormStatus" style="margin-top:14px; font-size:13.5px; display:none"></p>
         </form>
       </div>
 
@@ -1163,7 +1227,6 @@ body::before {
 <!-- ── FOOTER ── -->
 <footer class="portfolio-footer">
   <div class="footer-text">© 2025 <span>Muhammad Ismail Ali Khan</span>. All Rights Reserved.</div>
-  <div class="footer-text">Crafted with <span>♥</span> in Karachi, Pakistan</div>
 </footer>
 
 <script>
@@ -1185,7 +1248,7 @@ window.addEventListener('scroll', () => {
   });
 });
 
-const roles = ['Laravel applications','Python solutions','data science models','WordPress websites','scalable APIs','quality software'];
+const roles = ['Laravel applications','CodeIgniter apps','Python solutions','data science models','WordPress websites','scalable APIs','quality software'];
 let ri = 0, ci = 0, deleting = false;
 const el = document.getElementById('typedText');
 function type() {
@@ -1225,6 +1288,48 @@ document.getElementById('hamburger').addEventListener('click', () => {
   links.style.gap = '20px';
   links.style.borderBottom = '1px solid var(--line)';
 });
+
+const contactForm = document.getElementById('contact-form');
+const contactStatus = document.getElementById('contactFormStatus');
+const contactBtn = document.getElementById('contactSubmitBtn');
+if (contactForm) {
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    contactBtn.disabled = true;
+    contactBtn.style.opacity = '0.6';
+    contactStatus.style.display = 'none';
+
+    // honeypot check — if this hidden field got filled, silently drop it
+    const honeypot = contactForm.querySelector('input[name="website"]').value;
+    if (honeypot) { contactBtn.disabled = false; contactBtn.style.opacity = '1'; return; }
+
+    const payload = {
+      name: contactForm.name.value.trim(),
+      email: contactForm.email.value.trim(),
+      subject: contactForm.subject.value.trim(),
+      message: contactForm.msg.value.trim()
+    };
+
+    try {
+      if (!payload.name || !payload.email || !payload.subject || !payload.message) {
+        throw new Error('Please fill in every field.');
+      }
+      await window.__submitContactForm(payload);
+
+      contactStatus.style.display = 'block';
+      contactStatus.style.color = 'var(--emerald)';
+      contactStatus.textContent = 'Thanks! Your message has been sent.';
+      contactForm.reset();
+    } catch (err) {
+      contactStatus.style.display = 'block';
+      contactStatus.style.color = 'var(--wine)';
+      contactStatus.textContent = err.message || 'Something went wrong. Please try again.';
+    } finally {
+      contactBtn.disabled = false;
+      contactBtn.style.opacity = '1';
+    }
+  });
+}
 
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
